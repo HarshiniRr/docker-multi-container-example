@@ -1,0 +1,24 @@
+server {
+
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    root /srv/app;
+
+    location = /health {
+        access_log off;
+        return 204;
+    }
+
+    location / {
+        index index.php;
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass php:9000;
+    }
+
+    access_log /dev/stdout;
+}

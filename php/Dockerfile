@@ -1,0 +1,22 @@
+FROM ubuntu:14.04
+MAINTAINER Stephen Melrose <me@stephenmelrose.co.uk>
+
+# Update and install packages
+RUN apt-get update && apt-get install -y \
+    php5-cli \
+    php5-curl \
+    php5-mysql \
+    php5-xdebug \
+    php5-xhprof \
+    php5-fpm
+
+# php5-fpm config
+RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
+RUN sed -i -e "s/listen = .*/listen = 9000/g" /etc/php5/fpm/pool.d/www.conf
+RUN sed -i -e "s/;catch_workers_output = yes/catch_workers_output = yes/g" /etc/php5/fpm/pool.d/www.conf
+
+# Exose private ports
+EXPOSE 9000
+
+# Set default run command
+CMD ["/usr/sbin/php5-fpm","-F"]
