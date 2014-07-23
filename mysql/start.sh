@@ -9,7 +9,7 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
 
     # Start mysql and wait for it to be running
     echo "Starting mysql..."
-    /usr/bin/mysqld_safe &
+    /usr/bin/mysqld_safe --skip-syslog &
     mysql_pid=$!
     until mysqladmin ping &>/dev/null; do
         echo -n "."
@@ -25,6 +25,9 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
     echo "Stopping mysql..."
     mysqladmin shutdown
     wait $mysql_pid
+else
+    echo "mysql data directory intact. Skipping initialisation"
 fi
 
-/usr/bin/mysqld_safe
+echo "Starting mysql..."
+/usr/bin/mysqld_safe --skip-syslog

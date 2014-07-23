@@ -19,6 +19,4 @@ server {
         include fastcgi_params;
         fastcgi_pass php:9000;
     }
-
-    access_log /dev/stdout;
 }

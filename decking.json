@@ -1,29 +1,35 @@
 {
     "images": {
+        "dmce/log-data": "./log-data",
         "dmce/mysql-data": "./mysql-data",
         "dmce/mysql": "./mysql",
         "dmce/php": "./php",
         "dmce/nginx": "./nginx"
     },
     "containers": {
+        "log-data": {
+            "image": "dmce/log-data"
+        },
         "mysql-data": {
             "image": "dmce/mysql-data"
         },
         "mysql": {
             "image": "dmce/mysql",
             "env": ["MYSQL_ADMIN_PASSWORD=-"],
-            "mount-from": ["mysql-data"]
+            "mount-from": ["log-data", "mysql-data"]
         },
         "php": {
-            "image": "dmce/php"
+            "image": "dmce/php",
+            "dependencies": ["mysql:mysql"],
         },
         "nginx": {
             "image": "dmce/nginx",
-            "dependencies": ["php:php"]
+            "dependencies": ["php:php"],
+            "mount-from": ["log-data"]
         }
     },
     "clusters": {
-        "dev": ["mysql-data","mysql","php","nginx"]
+        "dev": ["log-data", "mysql-data","mysql","php","nginx"]
     },
     "groups": {
         "dev": {
