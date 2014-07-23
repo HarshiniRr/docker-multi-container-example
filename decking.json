@@ -2,7 +2,6 @@
     "images": {
         "dmce/log-data": "./log-data",
         "dmce/mysql-data": "./mysql-data",
-        "dmce/mysql": "./mysql",
         "dmce/php": "./php",
         "dmce/nginx": "./nginx"
     },
@@ -14,16 +13,18 @@
             "image": "dmce/mysql-data"
         },
         "mysql": {
-            "image": "dmce/mysql",
-            "env": ["MYSQL_ADMIN_PASSWORD=-"],
+            "image": "mysql:5.6",
+            "port": ["3306"],
+            "env": ["MYSQL_ROOT_PASSWORD=-"],
             "mount-from": ["log-data", "mysql-data"]
         },
         "php": {
             "image": "dmce/php",
-            "dependencies": ["mysql:mysql"],
+            "dependencies": ["mysql:mysql"]
         },
         "nginx": {
             "image": "dmce/nginx",
+            "port": ["80"],
             "dependencies": ["php:php"],
             "mount-from": ["log-data"]
         }
@@ -36,7 +37,7 @@
             "containers": {
                 "mysql": {
                     "port": ["33306:3306"],
-                    "env": ["MYSQL_ADMIN_PASSWORD=foobar"]
+                    "env": ["MYSQL_ROOT_PASSWORD=foobar"]
                 },
                 "php": {
                     "mount": ["./php:/var/app"]
