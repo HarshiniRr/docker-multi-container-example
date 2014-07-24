@@ -1,9 +1,10 @@
 {
     "images": {
-        "dmce/log-data": "./log-data",
-        "dmce/mysql-data": "./mysql-data",
-        "dmce/php": "./php",
-        "dmce/nginx": "./nginx"
+        "dmce/log-data": "./images/log-data",
+        "dmce/mysql-data": "./images/mysql-data",
+        "dmce/php-base": "./images/php-base",
+        "dmce/php-dev": "./images/php-dev",
+        "dmce/nginx": "./images/nginx"
     },
     "containers": {
         "log-data": {
@@ -19,7 +20,7 @@
             "mount-from": ["log-data", "mysql-data"]
         },
         "php": {
-            "image": "dmce/php",
+            "image": "dmce/php-base",
             "dependencies": ["mysql:mysql"]
         },
         "nginx": {
@@ -30,21 +31,29 @@
         }
     },
     "clusters": {
-        "dev": ["log-data", "mysql-data","mysql","php","nginx"]
+        "prod": ["log-data", "mysql-data","mysql","php","nginx"],
+        "dev": ["mysql-data","mysql","php","nginx"]
     },
     "groups": {
         "dev": {
             "containers": {
                 "mysql": {
                     "port": ["33306:3306"],
-                    "env": ["MYSQL_ROOT_PASSWORD=foobar"]
+                    "env": ["MYSQL_ROOT_PASSWORD=foobar"],
+                    "mount": ["./logs/mysql:/var/log/mysql"],
+                    "mount-from": ["mysql-data"]
                 },
                 "php": {
-                    "mount": ["./app:/var/app"]
+                    "image": "dmce/php-dev",
+                    "mount": ["./app/web:/var/app"]
                 },
                 "nginx": {
                     "port": ["8080:80"],
-                    "mount": ["./app:/var/app"]
+                    "mount": [
+                        "./app/web:/var/app",
+                        "./logs/nginx:/var/log/nginx"
+                    ],
+                    "mount-from": []
                 }
             }
         }

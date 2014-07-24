@@ -22,6 +22,8 @@ docker rm -f $(docker ps -a -q) 2> /dev/null
 
 set -e
 
+mkdir -p ./logs/
+
 bigEcho "Build docker images..."
 decking build all
 
@@ -36,6 +38,6 @@ echo "Waiting for mysql to start..."
 sleep 5
 
 echo "Initialising database..."
-mysql -P 33306 --protocol=tcp -u root -pfoobar < ./database.sql
+mysql -P 33306 --protocol=tcp -u root -pfoobar < ./app/database/dev.sql
 
 echo "Done!"

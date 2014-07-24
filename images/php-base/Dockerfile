@@ -1,3 +1,4 @@
+
 FROM ubuntu:14.04
 MAINTAINER Stephen Melrose <me@stephenmelrose.co.uk>
 
@@ -19,5 +20,5 @@ RUN sed -i -e "s/;catch_workers_output = yes/catch_workers_output = yes/g" /etc/
 EXPOSE 9000
 
 # Set default run command
-ADD php/start.sh /opt/start.sh
+ADD images/php-base/start.sh /opt/start.sh
 CMD ["/bin/bash", "/opt/start.sh"]

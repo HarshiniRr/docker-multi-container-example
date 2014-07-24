@@ -11,7 +11,7 @@ RUN apt-get install -y nginx
 # nginx config
 RUN sed -i -e"s/# server_tokens off/server_tokens off/" /etc/nginx/nginx.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-ADD nginx/default /etc/nginx/sites-available/default
+ADD images/nginx/default /etc/nginx/sites-available/default
 
 # Expose private ports
 EXPOSE 80
