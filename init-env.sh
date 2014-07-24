@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 while true; do
     read -p "This script removes ALL docker containers before initialisation. Continue? " yn
     case $yn in
@@ -20,7 +18,9 @@ function bigEcho {
 }
 
 bigEcho "Force remove all containers..."
-docker rm -f $(docker ps -a -q)
+docker rm -f $(docker ps -a -q) 2> /dev/null
+
+set -e
 
 bigEcho "Build docker images..."
 decking build all

@@ -40,11 +40,11 @@
                     "env": ["MYSQL_ROOT_PASSWORD=foobar"]
                 },
                 "php": {
-                    "mount": ["./php:/var/app"]
+                    "mount": ["./app:/var/app"]
                 },
                 "nginx": {
                     "port": ["8080:80"],
-                    "mount": ["./php:/var/app"]
+                    "mount": ["./app:/var/app"]
                 }
             }
         }
